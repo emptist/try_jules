@@ -1,4 +1,4 @@
-# 10S To-Do App
+# To-Do App
 
 A concise and practical to-do list application built with SwiftUI and SwiftData for iOS. This app focuses on core task management functionalities with a clean and intuitive user interface.
 
