@@ -12,7 +12,9 @@ struct TaskRow: View {
                 .frame(width: 24, height: 24)
                 .foregroundColor(task.isCompleted ? .green : .gray)
                 .onTapGesture {
-                    task.isCompleted.toggle()
+                    withAnimation(.easeInOut(duration: 0.3)) { // Added explicit animation
+                        task.isCompleted.toggle()
+                    }
                 }
 
             // NavigationLink for editing
@@ -42,31 +44,24 @@ struct TaskRow: View {
             Spacer()
         }
         .padding(.vertical, 4)
-        // Consider adding a subtle background change or a leading bar for overdue tasks
-        // For example:
-        // .background(taskIsOverdue() && !task.isCompleted ? Color.red.opacity(0.1) : Color.clear)
-        // However, this might make the UI too busy. Let's stick to text and icon for now.
     }
 
     private func taskIsOverdue() -> Bool {
         guard let dueDate = task.dueDate else { return false }
-        // A task is overdue if its due date is before the start of today.
-        // The check for !task.isCompleted is handled at the call sites where visual changes are applied.
         return dueDate < Calendar.current.startOfDay(for: Date())
     }
 }
 
+// Updated Preview for TaskRow to include Dark Mode
 #Preview {
-    do {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let container = try ModelContainer(for: TaskItem.self, configurations: config)
-
+    // Helper closure to create and populate the container for preview items
+    @MainActor
+    func getPreviewTaskItems(in container: ModelContainer) -> (overdue: TaskItem, dueToday: TaskItem, future: TaskItem, completedOverdue: TaskItem, noDueDate: TaskItem) {
         let overdueTask = TaskItem(title: "Overdue Task", dueDate: Calendar.current.date(byAdding: .day, value: -1, to: Date()), category: "Test")
-        let dueTodayTask = TaskItem(title: "Due Today Task", dueDate: Date(), category: "Test") // Due today, not overdue yet.
+        let dueTodayTask = TaskItem(title: "Due Today Task", dueDate: Date(), category: "Test")
         let dueLaterTask = TaskItem(title: "Future Task", dueDate: Calendar.current.date(byAdding: .day, value: 2, to: Date()), category: "Test")
         let completedOverdueTask = TaskItem(title: "Completed Overdue", isCompleted: true, dueDate: Calendar.current.date(byAdding: .day, value: -1, to: Date()), category: "Test")
         let noDueDateTask = TaskItem(title: "No Due Date", category: "Test")
-
 
         container.mainContext.insert(overdueTask)
         container.mainContext.insert(dueTodayTask)
@@ -74,17 +69,34 @@ struct TaskRow: View {
         container.mainContext.insert(completedOverdueTask)
         container.mainContext.insert(noDueDateTask)
 
-        return NavigationView {
-            List {
-                TaskRow(task: overdueTask)
-                TaskRow(task: dueTodayTask)
-                TaskRow(task: dueLaterTask)
-                TaskRow(task: completedOverdueTask)
-                TaskRow(task: noDueDateTask)
+        return (overdueTask, dueTodayTask, dueLaterTask, completedOverdueTask, noDueDateTask)
+    }
+
+    // Setup the overall container once
+    let previewContainer: ModelContainer = {
+        do {
+            let config = ModelConfiguration(isStoredInMemoryOnly: true)
+            return try ModelContainer(for: TaskItem.self, configurations: config)
+        } catch {
+            fatalError("Failed to create model container for preview: \(error)")
+        }
+    }()
+
+    // Populate items for the preview
+    let (overdue, today, future, completed, noDate) = getPreviewTaskItems(in: previewContainer)
+
+    return ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
+        NavigationView { // NavigationView is good for context
+            List { // List provides row context
+                TaskRow(task: overdue)
+                TaskRow(task: today)
+                TaskRow(task: future)
+                TaskRow(task: completed)
+                TaskRow(task: noDate)
             }
         }
-        .modelContainer(container)
-    } catch {
-        fatalError("Failed to create model container for preview: \(error)")
+        .modelContainer(previewContainer)
+        .preferredColorScheme(colorScheme)
+        .previewDisplayName("TaskRow - \(colorScheme == .dark ? "Dark" : "Light")")
     }
 }
