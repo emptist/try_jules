@@ -14,7 +14,7 @@ enum SortOption: String, CaseIterable, Identifiable {
 
 struct TaskListView: View {
     @Environment(\.modelContext) private var modelContext
-
+    
     @Query(sort: [SortDescriptor(\TaskItem.createdAt, order: .reverse)]) private var allTasks: [TaskItem]
 
     @State private var selectedCategory: String = "All"
@@ -29,7 +29,7 @@ struct TaskListView: View {
     }
 
     var searchedAndFilteredTasks: [TaskItem] {
-        var tasksToDisplay = Array(allTasks)
+        var tasksToDisplay = Array(allTasks) 
 
         if selectedCategory != "All" {
             tasksToDisplay = tasksToDisplay.filter { $0.category == selectedCategory }
@@ -48,23 +48,23 @@ struct TaskListView: View {
             tasksToDisplay.sort { $0.createdAt < $1.createdAt }
         case .dueDateAscending:
             tasksToDisplay.sort {
-                guard let date1 = $0.dueDate else { return false }
-                guard let date2 = $1.dueDate else { return true }
+                guard let date1 = $0.dueDate else { return false } 
+                guard let date2 = $1.dueDate else { return true }  
                 return date1 < date2
             }
         case .completionStatus:
             tasksToDisplay.sort {
-                if $0.isCompleted == $1.isCompleted {
-                    return $0.createdAt > $1.createdAt
+                if $0.isCompleted == $1.isCompleted { 
+                    return $0.createdAt > $1.createdAt 
                 }
-                return !$0.isCompleted && $1.isCompleted
+                return !$0.isCompleted && $1.isCompleted 
             }
         }
         return tasksToDisplay
     }
 
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading) { 
             Picker("Sort by", selection: $currentSortOption) {
                 ForEach(SortOption.allCases) { option in
                     Text(option.rawValue).tag(option)
@@ -91,7 +91,7 @@ struct TaskListView: View {
                             .foregroundColor(.gray)
                             .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                             .padding(.leading, 8)
-
+                        
                         if !searchText.isEmpty {
                             Button(action: { self.searchText = "" }) {
                                 Image(systemName: "multiply.circle.fill")
@@ -131,13 +131,13 @@ struct TaskListView: View {
     private func addTask() {
         let trimmedTitle = newTaskTitle.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedTitle.isEmpty else { return }
-
+        
         let trimmedCategory = newTaskCategory.trimmingCharacters(in: .whitespacesAndNewlines)
         let categoryToSave = trimmedCategory.isEmpty ? "General" : trimmedCategory
-
+        
         let newTask = TaskItem(title: trimmedTitle, category: categoryToSave)
         modelContext.insert(newTask)
-
+        
         newTaskTitle = ""
         newTaskCategory = "General"
     }
@@ -157,7 +157,7 @@ struct TaskListView: View {
         do {
             let config = ModelConfiguration(isStoredInMemoryOnly: true)
             let container = try ModelContainer(for: TaskItem.self, configurations: config)
-
+            
             let now = Date()
             container.mainContext.insert(TaskItem(title: "Task A (Due +5d, Created -10000s)", category: "Work", dueDate: Calendar.current.date(byAdding: .day, value: 5, to: now), createdAt: now.addingTimeInterval(-10000)))
             container.mainContext.insert(TaskItem(title: "Task B (Due +1d, Created -20000s)", category: "Work", dueDate: Calendar.current.date(byAdding: .day, value: 1, to: now), createdAt: now.addingTimeInterval(-20000)))

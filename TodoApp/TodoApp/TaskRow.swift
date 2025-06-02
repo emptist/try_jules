@@ -24,7 +24,7 @@ struct TaskRow: View {
                         .strikethrough(task.isCompleted, color: .gray)
                         .foregroundColor(taskIsOverdue() && !task.isCompleted ? .red : .primary) // Highlight title if overdue
                         .opacity(task.isCompleted ? 0.5 : 1.0)
-
+                    
                     if let dueDate = task.dueDate {
                         HStack {
                             if taskIsOverdue() && !task.isCompleted {
@@ -39,13 +39,13 @@ struct TaskRow: View {
                     }
                 }
             }
-            .buttonStyle(PlainButtonStyle())
+            .buttonStyle(PlainButtonStyle()) 
 
-            Spacer()
+            Spacer() 
         }
         .padding(.vertical, 4)
     }
-
+    
     private func taskIsOverdue() -> Bool {
         guard let dueDate = task.dueDate else { return false }
         return dueDate < Calendar.current.startOfDay(for: Date())
@@ -68,7 +68,7 @@ struct TaskRow: View {
         container.mainContext.insert(dueLaterTask)
         container.mainContext.insert(completedOverdueTask)
         container.mainContext.insert(noDueDateTask)
-
+        
         return (overdueTask, dueTodayTask, dueLaterTask, completedOverdueTask, noDueDateTask)
     }
 
@@ -81,7 +81,7 @@ struct TaskRow: View {
             fatalError("Failed to create model container for preview: \(error)")
         }
     }()
-
+    
     // Populate items for the preview
     let (overdue, today, future, completed, noDate) = getPreviewTaskItems(in: previewContainer)
 

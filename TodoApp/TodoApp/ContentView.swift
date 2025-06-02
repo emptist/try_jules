@@ -18,11 +18,11 @@ struct ContentView: View {
         do {
             let config = ModelConfiguration(isStoredInMemoryOnly: true)
             let container = try ModelContainer(for: TaskItem.self, configurations: config)
-
+            
             // Add some basic sample data, as TaskListView's preview does more extensive seeding.
             container.mainContext.insert(TaskItem(title: "Sample Task 1 (Content)", category: "Home"))
             container.mainContext.insert(TaskItem(title: "Sample Task 2 (Content)", category: "Work", isCompleted: true))
-
+            
             return container
         } catch {
             fatalError("Failed to create model container for preview: \(error)")

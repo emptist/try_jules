@@ -59,7 +59,7 @@ struct EditTaskView: View {
             fatalError("Failed to create model container for preview: \(error)")
         }
     }
-
+    
     let (task, container) = getPreviewTaskWithDueDate()
 
     return ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
@@ -85,7 +85,7 @@ struct EditTaskView: View {
             fatalError("Failed to create model container for preview: \(error)")
         }
     }
-
+    
     let (task, container) = getPreviewTaskWithoutDueDate()
 
     return ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
