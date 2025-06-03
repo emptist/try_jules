@@ -68,7 +68,7 @@ struct EditTaskView: View {
         }
         .modelContainer(container)
         .preferredColorScheme(colorScheme)
-        .previewDisplayName("With Due Date - \(colorScheme == .dark ? "Dark" : "Light")")
+//        .previewDisplayName("With Due Date - \(colorScheme == .dark ? "Dark" : "Light")")
     }
 }
 
@@ -94,6 +94,6 @@ struct EditTaskView: View {
         }
         .modelContainer(container)
         .preferredColorScheme(colorScheme)
-        .previewDisplayName("No Due Date - \(colorScheme == .dark ? "Dark" : "Light")")
+//        .previewDisplayName("No Due Date - \(colorScheme == .dark ? "Dark" : "Light")")
     }
 }

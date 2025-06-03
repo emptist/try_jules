@@ -97,6 +97,6 @@ struct TaskRow: View {
         }
         .modelContainer(previewContainer)
         .preferredColorScheme(colorScheme)
-        .previewDisplayName("TaskRow - \(colorScheme == .dark ? "Dark" : "Light")")
+//        .previewDisplayName("TaskRow - \(colorScheme == .dark ? "Dark" : "Light")")
     }
 }

@@ -150,35 +150,35 @@ struct TaskListView: View {
 }
 
 // Updated Preview for TaskListView to include Dark Mode
-#Preview {
-    // Helper closure to create and populate the container for preview
-    @MainActor
-    func getPreviewContainer() -> ModelContainer {
-        do {
-            let config = ModelConfiguration(isStoredInMemoryOnly: true)
-            let container = try ModelContainer(for: TaskItem.self, configurations: config)
-            
-            let now = Date()
-            container.mainContext.insert(TaskItem(title: "Task A (Due +5d, Created -10000s)", category: "Work", dueDate: Calendar.current.date(byAdding: .day, value: 5, to: now), createdAt: now.addingTimeInterval(-10000)))
-            container.mainContext.insert(TaskItem(title: "Task B (Due +1d, Created -20000s)", category: "Work", dueDate: Calendar.current.date(byAdding: .day, value: 1, to: now), createdAt: now.addingTimeInterval(-20000)))
-            container.mainContext.insert(TaskItem(title: "Task C (No Due Date, Completed, Created -5000s)", category: "Personal", isCompleted: true, createdAt: now.addingTimeInterval(-5000)))
-            container.mainContext.insert(TaskItem(title: "Task D (Due -1d, Completed, Created -30000s)", category: "Personal", isCompleted: true, dueDate: Calendar.current.date(byAdding: .day, value: -1, to: now), createdAt: now.addingTimeInterval(-30000)))
-            container.mainContext.insert(TaskItem(title: "Task E (Recent, Incomplete, No Due Date, Created -100s)", category: "Study", createdAt: now.addingTimeInterval(-100)))
-            container.mainContext.insert(TaskItem(title: "Task F (Oldest, Due +2d, Incomplete)", category: "Project", dueDate: Calendar.current.date(byAdding: .day, value: 2, to: now), createdAt: now.addingTimeInterval(-50000)))
-            container.mainContext.insert(TaskItem(title: "Task G (Recent, Completed, Due +3d)", category: "Work", isCompleted: true, dueDate: Calendar.current.date(byAdding: .day, value: 3, to: now), createdAt: now.addingTimeInterval(-50)))
-            return container
-        } catch {
-            fatalError("Failed to create model container for preview: \(error)")
-        }
-    }
-
-    // Loop through color schemes
-    return ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
-        NavigationView {
-            TaskListView()
-        }
-        .modelContainer(getPreviewContainer()) // Use the helper
-        .preferredColorScheme(colorScheme)
-        .previewDisplayName("\(colorScheme == .dark ? "Dark" : "Light") Mode")
-    }
-}
+//#Preview {
+//    // Helper closure to create and populate the container for preview
+//    @MainActor
+//    func getPreviewContainer() -> ModelContainer {
+//        do {
+//            let config = ModelConfiguration(isStoredInMemoryOnly: true)
+//            let container = try ModelContainer(for: TaskItem.self, configurations: config)
+//            
+//            let now = Date()
+//            container.mainContext.insert(TaskItem(title: "Task A (Due +5d, Created -10000s)", category: "Work", dueDate: Calendar.current.date(byAdding: .day, value: 5, to: now), createdAt: now.addingTimeInterval(-10000)))
+//            container.mainContext.insert(TaskItem(title: "Task B (Due +1d, Created -20000s)", category: "Work", dueDate: Calendar.current.date(byAdding: .day, value: 1, to: now), createdAt: now.addingTimeInterval(-20000)))
+//            container.mainContext.insert(TaskItem(title: "Task C (No Due Date, Completed, Created -5000s)", category: "Personal", isCompleted: true, createdAt: now.addingTimeInterval(-5000)))
+//            container.mainContext.insert(TaskItem(title: "Task D (Due -1d, Completed, Created -30000s)", category: "Personal", isCompleted: true, dueDate: Calendar.current.date(byAdding: .day, value: -1, to: now), createdAt: now.addingTimeInterval(-30000)))
+//            container.mainContext.insert(TaskItem(title: "Task E (Recent, Incomplete, No Due Date, Created -100s)", category: "Study", createdAt: now.addingTimeInterval(-100)))
+//            container.mainContext.insert(TaskItem(title: "Task F (Oldest, Due +2d, Incomplete)", category: "Project", dueDate: Calendar.current.date(byAdding: .day, value: 2, to: now), createdAt: now.addingTimeInterval(-50000)))
+//            container.mainContext.insert(TaskItem(title: "Task G (Recent, Completed, Due +3d)", category: "Work", isCompleted: true, dueDate: Calendar.current.date(byAdding: .day, value: 3, to: now), createdAt: now.addingTimeInterval(-50)))
+//            return container
+//        } catch {
+//            fatalError("Failed to create model container for preview: \(error)")
+//        }
+//    }
+//
+//    // Loop through color schemes
+//    return ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
+//        NavigationView {
+//            TaskListView()
+//        }
+//        .modelContainer(getPreviewContainer()) // Use the helper
+//        .preferredColorScheme(colorScheme)
+//        .previewDisplayName("\(colorScheme == .dark ? "Dark" : "Light") Mode")
+//    }
+//}

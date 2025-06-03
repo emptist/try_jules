@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     var body: some View {
@@ -9,7 +10,7 @@ struct ContentView: View {
 }
 
 // Updated Preview for ContentView to include Dark Mode
-#Preview {
+#Preview("ContentView") {
     // Helper closure to create and populate the container for preview
     // This is similar to TaskListView's preview container.
     // For a real app, this might be a shared utility.
@@ -21,7 +22,7 @@ struct ContentView: View {
             
             // Add some basic sample data, as TaskListView's preview does more extensive seeding.
             container.mainContext.insert(TaskItem(title: "Sample Task 1 (Content)", category: "Home"))
-            container.mainContext.insert(TaskItem(title: "Sample Task 2 (Content)", category: "Work", isCompleted: true))
+            container.mainContext.insert(TaskItem(title: "Sample Task 2 (Content)", isCompleted: true, category: "Work"))
             
             return container
         } catch {
@@ -33,6 +34,6 @@ struct ContentView: View {
         ContentView()
             .modelContainer(getPreviewContainer()) // Provide the model container
             .preferredColorScheme(colorScheme)
-            .previewDisplayName("ContentView - \(colorScheme == .dark ? "Dark" : "Light")")
+//            .previewDisplayName("ContentView - \(colorScheme == .dark ? "Dark" : "Light")")
     }
 }
